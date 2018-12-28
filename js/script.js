@@ -1,8 +1,6 @@
-// begin with 2 tiles placed randomly, each with value of 2
 // all tiles move in the direction of the arrow press (it's NOT per tile)
-// if adjacent tiles in direction of movement, add values together
-// each tile has a value and a location
-// each square of the grid needs to have a static location name
+// if adjacent tiles in direction of movement have same value, add values together
+// add 1 new 2-tile to the game after movement
 
 const valueToWord = [
 	{
@@ -120,20 +118,6 @@ const grid = document.createElement("div");
 grid.setAttribute("class", "grid");
 game.appendChild(grid);
 
-
-function createBoxes() {
-	gameGrid.forEach(item => {
-		const box = document.createElement("div");
-		box.classList.add("box");
-		box.id = item.location;
-		// box.textContent = item.location; // DELETE ME
-		box.textContent = item.value; // DEFAULT KEEP ME
-		grid.appendChild(box);
-
-		assignColorClass(item, box);
-	});
-}
-
 document.addEventListener("keydown", function(event) {
 	// ArrowRight
 	if(event.code === "ArrowRight") {
@@ -156,7 +140,21 @@ document.addEventListener("keydown", function(event) {
 	}
 });
 
+function createBoxes() {
+	gameGrid.forEach(item => {
+		const box = document.createElement("div");
+		box.classList.add("box");
+		box.id = item.location;
+		// box.textContent = item.location; // DELETE ME
+		box.textContent = item.value; // DEFAULT KEEP ME
+		grid.appendChild(box);
+
+		// assignColorClass(item, box);
+	});
+}
+
 // this function ONLY works when called within createBoxes() due to gameGrid.forEach loop
+// DELETE FUNCTION? create a new, more general one?
 function assignColorClass(item, box) {
 	// if item.value is not null, add corresponding color class
 	if(item.value != null) {
@@ -167,10 +165,10 @@ function assignColorClass(item, box) {
 		}
 	}
 	// if item.value IS null, display background color and remove displayed value
-	// if(item.value === null) { // KEEP ME
-	// 	box.setAttribute("class", "box"); // KEEP ME
-	// 	box.textContent = ""; // KEEP ME
-	// } // KEEP ME
+	if(item.value === null) { // KEEP ME
+		box.setAttribute("class", "box"); // KEEP ME
+		box.textContent = ""; // KEEP ME
+	} // KEEP ME
 }
 
 function moveLeft(gameGrid) {
@@ -187,33 +185,65 @@ function initialGeneration() {
 	for(var h = 0; h < 2; h++) {
 		// generate the location
 		let assignedLocation = Math.floor(Math.random() * Math.floor(16));
+		console.log("Assigned Location:", assignedLocation); // DELETE ME
+		// console.log(gameGrid[assignedLocation]); // DELETE ME
+		// console.log(gameGrid[assignedLocation].location); // DELETE ME
+		// console.log(gameGrid[assignedLocation].value); // DELETE ME
+
+		// generates new location if duplicate
+		if(doesLocationHaveValue(assignedLocation) === true) {
+			assignedLocation = Math.floor(Math.random() * Math.floor(16));
+			console.log("NEW assignedLocation", assignedLocation); // DELETE ME
+		}
+
+		// assign 2-value to the location in gameGrid
 		for(var i = 0; i < gameGrid.length; i++) {
-			// assign 2-value to the location in gameGrid
 			if(assignedLocation === gameGrid[i].location) {
-				console.log("Location:", assignedLocation); // DELETE ME
 				gameGrid[i].value = 2;
-				console.log("Value:", gameGrid[i].value);	 // DELETE ME
+				// console.log("Location:", assignedLocation); // DELETE ME
+				// console.log("Value:", gameGrid[i].value);	 // DELETE ME
 			}
 		}
+	
 		// display value in the correct square
 		document.getElementById(assignedLocation).textContent = gameGrid[assignedLocation].value;
 
 		// change color based on value in square
 		let currentBox = document.getElementById(assignedLocation);
+	
 		// convert value to words
 		for(var j = 0; j < valueToWord.length; j++) {
 			for(var k = 0; k < gameGrid.length; k++) {
 				if(gameGrid[k].value === valueToWord[j].value) {
 					// console.log("gameGrid value:", gameGrid[k].value); // DELETE ME
 					// console.log("valueToWord value:", valueToWord[j].word); // DELETE ME
+
 					// add class to element
 					currentBox.classList.add(valueToWord[j].word);
 				}
 			}
 		}
+
 	}
 }
 
+function doesLocationHaveValue(location) {
+	if(gameGrid[location].value > 0) {
+		console.log("gameGrid object:", gameGrid[location]);
+		console.log("value DOES exist in this location");
+		// console.log("Location:", gameGrid[assignedLocation].location); // DELETE ME
+		// console.log("Value:", gameGrid[assignedLocation].value); // DELETE ME
+		return true;
+	}
+
+	if(gameGrid[location].value === null) {
+		console.log("gameGrid object:", gameGrid[location]);
+		console.log("value does NOT exist in this location");
+		// console.log("Location:", gameGrid[assignedLocation].location); // DELETE ME
+		// console.log("Value:", gameGrid[assignedLocation].value); // DELETE ME
+		return false;
+	}
+}
 
 // RENDER GAME
 createBoxes();
