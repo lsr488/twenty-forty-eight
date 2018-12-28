@@ -72,7 +72,7 @@ let gameGrid = [
 	},
 	{
 		"location": 5,
-		"value": 2,
+		"value": null,
 	},
 	{
 		"location": 6,
@@ -126,8 +126,8 @@ function createBoxes() {
 		const box = document.createElement("div");
 		box.classList.add("box");
 		box.id = item.location;
-		box.textContent = item.location; // DELETE ME
-		// box.textContent = item.value; // DEFAULT KEEP ME
+		// box.textContent = item.location; // DELETE ME
+		box.textContent = item.value; // DEFAULT KEEP ME
 		grid.appendChild(box);
 
 		assignColorClass(item, box);
@@ -173,16 +173,48 @@ function assignColorClass(item, box) {
 	// } // KEEP ME
 }
 
-// use box's textContent as index to access gameGrid location and value
-// if the box has a value, check if the box in the direction of the key press has a value
-	// if the adjacent box doesn't have a value, move the current value to the new location
-		// how keep going to the end of the grid?
-	// if the adjacent box does have a value, check if the current value and the adjacent value are the same
-		// if the values are the same, add them together and change color
-
 function moveLeft(gameGrid) {
-
+	// use box's textContent as index to access gameGrid location and value
+	// if the box has a value, check if the box in the direction of the key press has a value
+		// if the adjacent box doesn't have a value, move the current value to the new location
+			// how keep going to the end of the grid?
+		// if the adjacent box does have a value, check if the current value and the adjacent value are the same
+			// if the values are the same, add them together and change color
 }
+
+// add 2 2-values to the gameGrid; new boxes always start at 2
+function initialGeneration() {
+	for(var h = 0; h < 2; h++) {
+		// generate the location
+		let assignedLocation = Math.floor(Math.random() * Math.floor(16));
+		for(var i = 0; i < gameGrid.length; i++) {
+			// assign 2-value to the location in gameGrid
+			if(assignedLocation === gameGrid[i].location) {
+				console.log("Location:", assignedLocation); // DELETE ME
+				gameGrid[i].value = 2;
+				console.log("Value:", gameGrid[i].value);	 // DELETE ME
+			}
+		}
+		// display value in the correct square
+		document.getElementById(assignedLocation).textContent = gameGrid[assignedLocation].value;
+
+		// change color based on value in square
+		let currentBox = document.getElementById(assignedLocation);
+		// convert value to words
+		for(var j = 0; j < valueToWord.length; j++) {
+			for(var k = 0; k < gameGrid.length; k++) {
+				if(gameGrid[k].value === valueToWord[j].value) {
+					// console.log("gameGrid value:", gameGrid[k].value); // DELETE ME
+					// console.log("valueToWord value:", valueToWord[j].word); // DELETE ME
+					// add class to element
+					currentBox.classList.add(valueToWord[j].word);
+				}
+			}
+		}
+	}
+}
+
 
 // RENDER GAME
 createBoxes();
+initialGeneration();
