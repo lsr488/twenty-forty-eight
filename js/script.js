@@ -56,13 +56,13 @@ let gameGrid = [
 	},
 	{
 		"location": 1,
-		"value": 4,
+		"value": null,
 	},	{
 		"location": 2,
 		"value": 2,
 	},	{
 		"location": 3,
-		"value": 2,
+		"value": null,
 	},
 	{
 		"location": 4,
@@ -254,6 +254,44 @@ function moveLeft() {
 			let result = occupiedBoxes[i].location - gameGrid[0].location;
 			console.log("current location - first box of row = ", result);
 
+			// checks 1 box to left
+			let leftAdjacent = occupiedBoxes[i].location - 1;
+			console.log("Location of left-adjacent:", leftAdjacent);
+
+			if(doesLocationHaveValue(leftAdjacent)) {
+				console.log("leftAdjacent value:", gameGrid[leftAdjacent].value);
+				console.log("current value:", occupiedBoxes[i].value);
+				if(gameGrid[leftAdjacent].value === occupiedBoxes[i].value) {
+					gameGrid[leftAdjacent].value = gameGrid[leftAdjacent].value + occupiedBoxes[i].value;
+					console.log("new leftAdjacent value:", gameGrid[leftAdjacent].value);
+					var leftAdjacentBox = document.getElementById(gameGrid[leftAdjacent].location);
+					leftAdjacentBox.textContent = gameGrid[leftAdjacent].value;
+					document.getElementById(occupiedBoxes[i].location).textContent = null;
+				} else {
+					console.log("values don't match");
+				}
+			} else if(doesLocationHaveValue(leftAdjacent) === false) {
+				console.log("let's check the next left-adjacent box");
+				// checks 2 boxes to the left
+				leftAdjacent = occupiedBoxes[i].location - 2;
+				console.log("new leftAdjacent:", leftAdjacent);
+				if(doesLocationHaveValue(leftAdjacent)) {
+					if(gameGrid[leftAdjacent].value === occupiedBoxes[i].value) {
+					gameGrid[leftAdjacent].value = gameGrid[leftAdjacent].value + occupiedBoxes[i].value;
+					console.log("new leftAdjacent value:", gameGrid[leftAdjacent].value);
+					var leftAdjacentBox = document.getElementById(gameGrid[leftAdjacent].location);
+					leftAdjacentBox.textContent = gameGrid[leftAdjacent].value;
+					document.getElementById(occupiedBoxes[i].location).textContent = null;
+					}	
+				}
+			} else {}
+		}
+
+		// second row (exact duplicate of first row, with the initial if-condition changed)
+		if(occupiedBoxes[i].location < 8 && occupiedBoxes[i].location > 3) {
+			let result = occupiedBoxes[i].location - gameGrid[0].location;
+			console.log("current location - first box of row = ", result);
+
 			let leftAdjacent = occupiedBoxes[i].location - 1;
 			console.log("Location of left-adjacent:", leftAdjacent);
 
@@ -272,6 +310,7 @@ function moveLeft() {
 			}
 
 		}
+
 	}
 
 	// use box's id as index to access gameGrid location and value
