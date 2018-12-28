@@ -1,3 +1,85 @@
+:root {
+	--dark-gray: #5D6D7E;
+	--two-square: #D5D8DC;
+	--four-square: /*#F9E79F*/ /*#FCF3CF*/ /*#FEF9E7*/ #FDEBD0;
+	--eight-square: #F5B041;
+	--sixteen-square: #F1948A;
+	--thirty-two-square: #EC7063;
+	--sixty-four-square: #E53935;
+	--one-twenty-eight-square: #FEF9E7;
+	--two-fifty-six-square: /*#FCF3CF*/ /*#F7DC6F*/ #F9E79F;
+	--five-twelve-square: #F7DC6F /*#F9E79F*/;
+	--ten-twenty-four-square: #F1C40F;
+	--twenty-forty-eight-square: #F39C12;
+	--box-dimension: 100px;
+}
+
 body {
   font-family: 'Dosis', sans-serif;
+  background-color: var(--dark-gray);
+ }
+
+.box {
+ 	width: var(--box-dimension);
+ 	height: var(--box-dimension);
+ 	font-size: 36px;
+ 	text-align: center;
+ 	border: 4px solid black;
+}
+
+#game {
+
+}
+
+#color-bank {
+	display: flex;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: var(--box-dimension) var(--box-dimension)var(--box-dimension)var(--box-dimension);
+}
+
+.two {
+ 	background-color: var(--two-square);
+}
+
+.four {
+	background-color: var(--four-square);
+}
+
+.eight {
+	background-color: var(--eight-square);
+}
+
+.sixteen {
+	background-color: var(--sixteen-square);
+}
+
+.thirty-two {
+	background-color: var(--thirty-two-square);
+}
+
+.sixty-four {
+	background-color: var(--sixty-four-square);
+}
+
+.one-twenty-eight {
+	background-color: var(--one-twenty-eight-square);
+}
+
+.two-fifty-six {
+	background-color: var(--two-fifty-six-square);
+}
+
+.five-twelve {
+	background-color: var(--five-twelve-square);
+}
+
+.ten-twenty-four {
+	background-color: var(--ten-twenty-four-square);
+}
+
+.twenty-forty-eight {
+	background-color: var(--twenty-forty-eight-square);
 }
