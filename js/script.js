@@ -52,17 +52,17 @@ const valueToWord = [
 let gameGrid = [
 	{
 		"location": 0,
-		"value": null,
+		"value": 2,
 	},
 	{
 		"location": 1,
-		"value": null,
+		"value": 4,
 	},	{
 		"location": 2,
-		"value": null,
+		"value": 2,
 	},	{
 		"location": 3,
-		"value": null,
+		"value": 2,
 	},
 	{
 		"location": 4,
@@ -127,6 +127,7 @@ document.addEventListener("keydown", function(event) {
 	// ArrowLeft
 	if(event.code === "ArrowLeft") {
 		console.log("left arrow");
+		moveLeft();
 	}
 
 	// ArrowUp
@@ -169,15 +170,6 @@ function assignColorClass(item, box) {
 		box.setAttribute("class", "box"); // KEEP ME
 		box.textContent = ""; // KEEP ME
 	} // KEEP ME
-}
-
-function moveLeft(gameGrid) {
-	// use box's textContent as index to access gameGrid location and value
-	// if the box has a value, check if the box in the direction of the key press has a value
-		// if the adjacent box doesn't have a value, move the current value to the new location
-			// how keep going to the end of the grid?
-		// if the adjacent box does have a value, check if the current value and the adjacent value are the same
-			// if the values are the same, add them together and change color
 }
 
 // add 2 2-values to the gameGrid; new boxes always start at 2
@@ -223,7 +215,6 @@ function initialGeneration() {
 				}
 			}
 		}
-
 	}
 }
 
@@ -245,6 +236,53 @@ function doesLocationHaveValue(location) {
 	}
 }
 
+function moveLeft() {
+	let occupiedBoxes = [];
+	// check for box occupation
+	for(var i = 0; i < gameGrid.length; i++) {
+		if(gameGrid[i].value) {
+			console.log("Location " + gameGrid[i].location + " is not empty. The value is " + gameGrid[i].value);
+			occupiedBoxes.push(gameGrid[i]);
+			console.log("occupiedBoxes:", occupiedBoxes);
+		}
+	}
+
+	// check if left-adjacent box has value
+	for(var i = 0; i < occupiedBoxes.length; i++) {
+		// first row
+		if(occupiedBoxes[i].location < 4 && occupiedBoxes[i].location > 0) {
+			let result = occupiedBoxes[i].location - gameGrid[0].location;
+			console.log("current location - first box of row = ", result);
+
+			let leftAdjacent = occupiedBoxes[i].location - 1;
+			console.log("Location of left-adjacent:", leftAdjacent);
+
+			if(doesLocationHaveValue(leftAdjacent)) {
+				console.log("leftAdjacent value:", gameGrid[leftAdjacent].value);
+				console.log("current value:", occupiedBoxes[i].value);
+				if(gameGrid[leftAdjacent].value === occupiedBoxes[i].value) {
+					gameGrid[leftAdjacent].value = gameGrid[leftAdjacent].value + occupiedBoxes[i].value;
+					console.log("new leftAdjacent value:", gameGrid[leftAdjacent].value);
+					var leftAdjacentBox = document.getElementById(gameGrid[leftAdjacent].location);
+					leftAdjacentBox.textContent = gameGrid[leftAdjacent].value;
+					document.getElementById(occupiedBoxes[i].location).textContent = null;
+				} else {
+					console.log("values don't match");
+				}
+			}
+
+		}
+	}
+
+	// use box's id as index to access gameGrid location and value
+	// if the box has a value, check if the box in the direction of the key press has a value
+		// if the adjacent box doesn't have a value, move the current value to the new location
+			// how keep going to the end of the grid?
+		// if the adjacent box does have a value, check if the current value and the adjacent value are the same
+			// if the values are the same, add them together and change color
+}
+
+
 // RENDER GAME
 createBoxes();
-initialGeneration();
+// initialGeneration();
